@@ -1,0 +1,33 @@
+<div class="p-4 min-h-[60vh]">
+  <h2 class="text-xl font-semibold mb-4">Productos Recibidos</h2>
+
+  <!-- Mostrar productos si hay en el array -->
+  @if(products.length > 0){
+  <div>
+    <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+      @for (product of products; track product) {
+      <div class="border rounded-lg p-4 shadow-md bg-white">
+        <img
+          [src]="product.img_url"
+          alt="{{ product.name }}"
+          class="w-full h-32 object-cover mb-2"
+        />
+        <p class="text-lg font-semibold">{{ product.name }}</p>
+        <p class="text-sm text-gray-700">{{ product.description }}</p>
+        <p class="text-sm text-gray-500">Precio: {{ product.price }}</p>
+        <a
+          [href]="product.url"
+          target="_blank"
+          class="text-blue-500 hover:underline"
+          >Ver producto</a
+        >
+      </div>
+      }
+    </div>
+  </div>
+  }@else {
+  <ng-template>
+    <p class="text-center text-gray-500">No hay productos recibidos aún.</p>
+  </ng-template>
+  }
+</div>

@@ -2,8 +2,17 @@ import { Component } from '@angular/core';
 import { CategoryService } from '../category.service';
 import { Router } from '@angular/router';
 
+interface Category {
+  id: number;
+  name: string;
+  description: string;
+  scrappers: string[];
+  selected: boolean;
+}
+
 interface Subscription {
   category_id: number;
+  category: Category;
   url: string;
   request_body: {
     command: string;

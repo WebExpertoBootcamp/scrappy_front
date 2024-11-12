@@ -7,6 +7,7 @@ interface Category {
   id: number;
   name: string;
   description: string;
+  scrappers: string[];
   selected: boolean;
 }
 
@@ -29,6 +30,7 @@ export class SuscriptionsComponent {
           id: category.id,
           name: category.name,
           description: category.description,
+          scrappers: category.scrappers,
           selected: false 
         }));
       },

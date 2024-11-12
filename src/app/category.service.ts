@@ -7,11 +7,13 @@ interface Category {
   id: number;
   name: string;
   description: string;
+  scrappers: string[];
   selected: boolean;
 }
 
 interface Subscription {
   category_id: number;
+  category: Category;
   url: string;
   request_body: {
     command: string;
@@ -35,7 +37,7 @@ export class CategoryService {
 
   // Obtener todas las categorías
   getCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(this.apiUrl+'/categories.json');
+    return this.http.get<Category[]>(this.apiUrl+'/api/v1/auth/list_categories');
   }
 
   subscribeToCategories(categoryIds: number[]): Observable<any> {

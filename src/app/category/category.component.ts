@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../environments/enviroment';
+import { CommonModule } from '@angular/common';
 
 interface Product {
   id: number;
@@ -15,10 +16,17 @@ interface Product {
   sku: string;
 }
 
+interface Notification {
+  type: string;         // Tipo de mensaje: "Atencion" o "Oferta"
+  lowerPrice: number;   // Precio mínimo
+  higherPrice: number;  // Precio máximo
+  product: Product;     // Producto asociado a la notificación
+}
+
 @Component({
   selector: 'app-category',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './category.component.html',
   styleUrl: './category.component.css'
 })
@@ -26,7 +34,7 @@ export class CategoryComponent {
   categoryId: number | null = null;
   private socket: WebSocket | null = null;
   private wsUrl = environment.wsUrl;
-  products: Product[] = [];
+  notifications: Notification[] = [];
 
   constructor(private route: ActivatedRoute) {}
 
@@ -61,10 +69,26 @@ export class CategoryComponent {
     this.socket.onmessage = (event) => {
       console.log('Mensaje recibido:', event.data);
       const data = JSON.parse(event.data);
+
       if (data.message && data.message.product) {
+        const message = data.message.message;
+        const lowerPrice = data.message.lower_price;
+        const higherPrice = data.message.higher_price;
         const product: Product = data.message.product;
-        this.products.push(product); // Agrega el producto al array
-        console.log('Producto recibido:', product);
+
+        // Determinar el tipo de mensaje (Atencion u Oferta)
+        const type = message.includes("¡Atencion!") ? "Atencion" : "Oferta";
+
+        // Crear y almacenar la notificación completa
+        const notification: Notification = {
+          type: type,
+          lowerPrice: lowerPrice,
+          higherPrice: higherPrice,
+          product: product
+        };
+
+        this.notifications.unshift(notification);
+        console.log('Notificación recibida:', notification);
       }
     };
 

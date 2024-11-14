@@ -11,9 +11,11 @@ interface Category {
   selected: boolean;
 }
 
+
 interface Subscription {
-  category_id: number;
-  category: Category;
+  id: number;
+  name: string;
+  description: string;
   url: string;
   request_body: {
     command: string;
